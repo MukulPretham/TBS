@@ -10,26 +10,9 @@ const NavBar = () => {
 
                 <ol className='hidden md:flex ml-5 items-center gap-2.5'>
                     <ol className='hidden md:flex ml-5 items-center gap-2.5'>
-                        <NavLink
-                            to="/"
-                            className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}
-                        >
-                            Home
-                        </NavLink>
-
-                        <NavLink
-                            to="/about"
-                            className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}
-                        >
-                            About Us
-                        </NavLink>
-
-                        <NavLink
-                            to="/contacts"
-                            className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}
-                        >
-                            Contact Us
-                        </NavLink>
+                        <NavLink to="/" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Home</NavLink>
+                        <NavLink to="/about" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>About</NavLink>
+                        <NavLink to="/contacts" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Contacts</NavLink>
                     </ol>
 
                 </ol>
@@ -39,9 +22,9 @@ const NavBar = () => {
                 </div>
             </nav>
             {menu && <div><ol className='bg-slate-200 w-[100vw] absolute flex flex-col gap-2.5'>
-                <li className='cursor-pointer border-2 border-red-600 p-2.5 rounded-2xl'>Home</li>
-                <li className='cursor-pointer border-2 border-red-600 p-2.5 rounded-2xl'>About Us</li>
-                <li className='cursor-pointer border-2 border-red-600 p-2.5 rounded-2xl'>Contact Us</li>
+                <NavLink to="/" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Home</NavLink>
+                        <NavLink to="/about" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>About</NavLink>
+                        <NavLink to="/contacts" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Contacts</NavLink>
             </ol></div>}
         </div>
     )

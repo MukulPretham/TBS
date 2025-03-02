@@ -21,12 +21,14 @@ const Profile = () => {
     return (
         <>
             <NavBar />
-            <div className='h-[91vh] flex flex-col border-2'>
-                <h1 className='text-4xl'>Your Profile</h1>
-                <span>Name: {user.username}</span>
-                <span>Email: {user.email}</span>
-                <span>City: {user.city}</span>
-                <span>State: {user.state}</span>
+            <div className='h-[91vh] flex flex-col'>
+                <div className="info flex flex-col ml-2">
+                    <h1 className='text-4xl'>Your Profile</h1>
+                    <span>Name: {user.username}</span>
+                    <span>Email: {user.email}</span>
+                    <span>City: {user.city}</span>
+                    <span>State: {user.state}</span>
+                </div>
             </div>
         </>
     )

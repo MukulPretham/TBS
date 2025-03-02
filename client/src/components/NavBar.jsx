@@ -9,7 +9,7 @@ const NavBar = () => {
     //Checking for log status
     useEffect(() => {
         let token = localStorage.getItem("token");
-        if(token){
+        if (token) {
             setLogged(true);
         }
     }, [])
@@ -22,15 +22,18 @@ const NavBar = () => {
                 <ol className='hidden md:flex ml-5 items-center gap-2.5'>
                     <ol className='hidden md:flex ml-5 items-center gap-2.5'>
                         <NavLink to="/" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Home</NavLink>
-                        <NavLink to="/about" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>About</NavLink>
-                        <NavLink to="/contacts" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Contacts</NavLink>
+                        <NavLink to="/buses" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Buses</NavLink>
+                        <NavLink to="/trains" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Trains</NavLink>
+                        <NavLink to="/flights" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Flights</NavLink>
+                        <NavLink to="/hotels" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Hotels</NavLink>
                     </ol>
 
                 </ol>
                 <div className="nav-buttons">
                     {logged ? <div className="authButtons mr-1.5 flex gap-1.5">
                         <NavLink to="/Profile"><button className='text-black bg-slate-300 cursor-pointer rounded-3xl r p-2.5'>Profile</button></NavLink>
-                        <button onClick={()=>{localStorage.removeItem("token")
+                        <button onClick={() => {
+                            localStorage.removeItem("token")
                             setLogged(false);
                             navigate("/");
                         }} className='bg-red-500 text-white rounded-3xl cursor-pointer px-5  py-2.5'>Log-Out</button>
@@ -43,8 +46,10 @@ const NavBar = () => {
             </nav>
             {menu && <div><ol className='bg-slate-200 w-[100vw] absolute flex flex-col gap-2.5'>
                 <NavLink to="/" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Home</NavLink>
-                <NavLink to="/about" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>About</NavLink>
-                <NavLink to="/contacts" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Contacts</NavLink>
+                <NavLink to="/buses" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Buses</NavLink>
+                <NavLink to="/trains" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Trains</NavLink>
+                <NavLink to="/flights" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Flights</NavLink>
+                <NavLink to="/hotels" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Hotels</NavLink>
             </ol></div>}
         </div>
     )

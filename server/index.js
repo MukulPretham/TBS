@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import jwt from "jsonwebtoken";
-
+import { auth } from "./middlewares/auth.js";
 import { User } from "./models/user.js";
 
 let app = express();
@@ -49,10 +49,15 @@ app.post("/logIn",async(req,res)=>{
     }
     //Creating a token
     let token = jwt.sign(
-        {_id:currUser._id,username: currUsername},
+        {userID:currUser._id,username: currUsername},
         process.env.JWT_SECRET
     );
     res.json({token});
+})
+
+app.get("/users",auth,async(req,res)=>{
+    let users = await User.find();
+    res.json(users);
 })
 
 app.listen(process.env.PORT,()=>{

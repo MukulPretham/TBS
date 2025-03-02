@@ -24,12 +24,21 @@ app.get("/",(req,res)=>{
 
 app.post("/signIn",async(req,res)=>{
     let currUsername = req.body.username;
+    if(await User.findOne({username:currUsername})){
+        return res.status(409).json({message: "user already exist"});
+    }
     let currEmail = req.body.email;
+    if(await User.findOne({email:currEmail})){
+        return res.status(409).json({message: "email already exist"});
+    }
     let currPassword = req.body.password;
-
+    let currCity = req.body.city;
+    let currState = req.body.state;
     let newUser = new User({
         username: currUsername,
         email: currEmail,
+        city : currCity,
+        state: currState,
         password: currPassword
     })
     await newUser.save();
@@ -45,7 +54,7 @@ app.post("/logIn",async(req,res)=>{
         return res.status(404).json({message : "Invalid username"});
     }
     if(currUser.password !== currPassword ){
-        return res.status(401).json({message : "Invalid password"});
+        return res.status(404).json({message : "Invalid password"});
     }
     //Creating a token
     let token = jwt.sign(
@@ -56,8 +65,8 @@ app.post("/logIn",async(req,res)=>{
 })
 
 app.get("/users",auth,async(req,res)=>{
-    let users = await User.find();
-    res.json(users);
+    let currUser = await User.findOne({_id:req.userID});
+    res.status(200).json(currUser);
 })
 
 app.listen(process.env.PORT,()=>{

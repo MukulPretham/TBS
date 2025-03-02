@@ -4,13 +4,15 @@ import { useForm } from 'react-hook-form'
 import { NavLink } from 'react-router'
 import { useNavigate } from 'react-router'
 const SignUp = () => {
-    const { register, handleSubmit, watch, formState: { errors } } = useForm();
+    const { register, handleSubmit, watch, formState: { errors },setError } = useForm();
     const navigate = useNavigate();
 
     let onSubmit = async(data)=>{
         let currUsername = data["username"];
         let currEmail = data["email"];
         let currPassword = data["password"];
+        let currCity = data["city"];
+        let currState = data["state"];
         // console.log(currUsername);
         let response = await fetch("http://localhost:3000/signIn",
             {
@@ -21,11 +23,17 @@ const SignUp = () => {
                 body:JSON.stringify({
                     username: currUsername,
                     email: currEmail,
+                    city: currCity,
+                    state: currState,
                     password: currPassword
                 })
             }
         )
-        console.log(response);
+        let Data = await response.json();
+        if(response.status === 409){
+            return setError("username",{message: Data.message});
+        }
+        console.log(Data);
         navigate("/LogIn");
     }
 
@@ -41,6 +49,12 @@ const SignUp = () => {
                     {errors.email && <span className='text-[14px] text-red-500'>invalid email</span>}
                     <input {...register("email", 
                         {required: "email required"})} type="email" className='w-[60%] border-1 border-black px-1' placeholder='E-mail' />
+                    {errors.city && <span className='text-[14px] text-red-500'>{errors.city.message}</span>}
+                    <input {...register("city",
+                        {required: "city required"})} type="text" className='w-[60%] border-1 border-black px-1' placeholder='your city' />
+                    {errors.state && <span className='text-[14px] text-red-500'>{errors.state.message}</span>}
+                    <input {...register("state",
+                        {required: "state required"})} type="text" className='w-[60%] border-1 border-black px-1' placeholder='your state' />
                     {errors.password && <span className='text-[14px] text-red-500'>{errors.password.message}</span>}
                     <input {...register("password" ,
                         {required: "password required",minLength:{value: 8,message:"minimum 8 charecters of password required"}})} type="password" className='w-[60%] border-1 border-black px-1' placeholder='password'/>

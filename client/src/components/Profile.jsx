@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import NavBar from './NavBar'
-
+import { useNavigate } from 'react-router';
 const Profile = () => {
     let [user, setUser] = useState({});
+    let navigate = useNavigate();
     useEffect(() => {
         const fetchUser = async () => {
             let token = localStorage.getItem("token");
@@ -29,6 +30,10 @@ const Profile = () => {
                     <span>City: {user.city}</span>
                     <span>State: {user.state}</span>
                 </div>
+                <button onClick={() => {
+                    localStorage.removeItem("token")
+                    navigate("/");
+                }} className='bg-red-500 text-white rounded-3xl cursor-pointer px-5  py-2.5 w-[140px]'>Log-Out</button>
             </div>
         </>
     )

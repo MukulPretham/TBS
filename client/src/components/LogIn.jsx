@@ -3,28 +3,36 @@ import NavBar from './NavBar'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router'
 import { NavLink } from 'react-router'
+import nProgress from 'nprogress'
+import 'nprogress/nprogress.css'
 const LogIn = () => {
-    const { register, handleSubmit, watch, formState: { errors },setError } = useForm();
+    const { register, handleSubmit, watch, formState: { errors }, setError } = useForm();
     const navigate = useNavigate();
-    let onSubmit = async(data)=>{
-        let currUsername = data["username"];
-        let currPassword = data["password"];
-        let response = await fetch("http://localhost:3000/logIn",{
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body:JSON.stringify({
-                username: currUsername,
-                password: currPassword
+    let onSubmit = async (data) => {
+        nProgress.start();
+        try {
+            let currUsername = data["username"];
+            let currPassword = data["password"];
+            let response = await fetch("http://localhost:3000/logIn", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    username: currUsername,
+                    password: currPassword
+                })
             })
-        })
-        let Data = await response.json();
-        if(response.status === 404){
-            return setError("username",{message: Data.message});
-        }else{
-            localStorage.setItem("token",Data["token"]);
-            navigate("/");
+            let Data = await response.json();
+            if (response.status === 404) {
+                return setError("username", { message: Data.message });
+
+            } else {
+                localStorage.setItem("token", Data["token"]);
+                navigate("/");
+            }
+        }finally{
+            nProgress.done();
         }
     }
     return (

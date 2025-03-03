@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import SignUp from './components/SignUp.jsx'
 import LogIn from './components/LogIn.jsx'
 import Profile from './components/Profile.jsx'
@@ -20,7 +20,7 @@ function App() {
   let [menu, setMenu] = useState(false);
   return (
     <div>
-      <MyContext.Provider value={{logged,setLogged,menu,setMenu}}>
+      <MyContext.Provider value={{ logged, setLogged, menu, setMenu }}>
         <NavBar />
         <Routes>
           <Route path='/buses' element={<Buses />} />

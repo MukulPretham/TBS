@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import NavBar from './NavBar'
+import { useContext } from 'react';
 import { useNavigate } from 'react-router';
+import { MyContext } from '../context/context';
 const Profile = () => {
+    let { logged, setLogged } = useContext(MyContext);
     let [user, setUser] = useState({});
     let navigate = useNavigate();
+
     useEffect(() => {
         const fetchUser = async () => {
             let token = localStorage.getItem("token");
@@ -21,7 +25,7 @@ const Profile = () => {
 
     return (
         <>
-            
+
             <div className='h-[91vh] flex flex-col'>
                 <div className="info flex flex-col ml-2">
                     <h1 className='text-4xl'>Your Profile</h1>
@@ -32,7 +36,8 @@ const Profile = () => {
                 </div>
                 <button onClick={() => {
                     localStorage.removeItem("token")
-                    navigate("/");
+                    
+                    navigate("/buses");
                 }} className='bg-red-500 text-white rounded-3xl cursor-pointer px-5  py-2.5 w-[140px]'>Log-Out</button>
             </div>
         </>

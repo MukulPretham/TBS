@@ -1,18 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { NavLink } from 'react-router';
 import { useNavigate } from 'react-router';
+import { MyContext } from '../context/context';
 const NavBar = () => {
     let navigate = useNavigate();
-    let [logged, setLogged] = useState(false);
-    let [menu, setMenu] = useState(false);
+    let { logged, setLogged, menu, setMenu } = useContext(MyContext);
+    // let [logged, setLogged] = useState(false);
+    // let [menu, setMenu] = useState(false);
 
+    
     //Checking for log status
     useEffect(() => {
         let token = localStorage.getItem("token");
         if (token) {
             setLogged(true);
+        }else{
+            setLogged(false);
         }
-    }, [])
+    },)
 
     return (
         <div className='sticky top-0'>
@@ -31,7 +36,7 @@ const NavBar = () => {
                 </ol>
                 <div className="nav-buttons">
                     {logged ? <div className="authButtons mr-1.5 flex gap-1.5">
-                        <NavLink className={({isActive})=> isActive?"text-white bg-red-500 cursor-pointer rounded-3xl r p-2.5":"text-black bg-slate-300 cursor-pointer rounded-3xl r p-2.5"} to="/Profile"><button className='cursor-pointer'>Profile</button></NavLink>
+                        <NavLink className={({ isActive }) => isActive ? "text-white bg-red-500 cursor-pointer rounded-3xl r p-2.5" : "text-black bg-slate-300 cursor-pointer rounded-3xl r p-2.5"} to="/Profile"><button className='cursor-pointer'>Profile</button></NavLink>
                         {/* <button onClick={() => {
                             localStorage.removeItem("token")
                             setLogged(false);
@@ -45,11 +50,11 @@ const NavBar = () => {
 
             </nav>
             {menu && <div><ol className='bg-slate-200 w-[100vw] absolute flex flex-col gap-2.5'>
-                <NavLink to="/" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Home</NavLink>
-                <NavLink to="/buses" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Buses</NavLink>
-                <NavLink to="/trains" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Trains</NavLink>
-                <NavLink to="/flights" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Flights</NavLink>
-                <NavLink to="/hotels" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Hotels</NavLink>
+                <NavLink onClick={()=>{setMenu(!menu)}} to="/" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Home</NavLink>
+                <NavLink onClick={()=>{setMenu(!menu)}} to="/buses" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Buses</NavLink>
+                <NavLink onClick={()=>{setMenu(!menu)}} to="/trains" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Trains</NavLink>
+                <NavLink onClick={()=>{setMenu(!menu)}} to="/flights" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Flights</NavLink>
+                <NavLink onClick={()=>{setMenu(!menu)}} to="/hotels" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Hotels</NavLink>
             </ol></div>}
         </div>
     )

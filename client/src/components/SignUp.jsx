@@ -47,7 +47,7 @@ const SignUp = () => {
 
     return (
         <>
-            <NavBar />
+            
             <div className='h-[91vh] flex flex-col justify-center items-center'>
                 <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col justify-center items-center gap-3.5 rounded-4xl bg-slate-100 w-[98%] h-[60vh] md:w-[40%]'>
                     <h1 className='text-4xl'>Create a new Account</h1>

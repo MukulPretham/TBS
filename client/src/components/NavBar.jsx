@@ -21,7 +21,7 @@ const NavBar = () => {
 
     return (
         <div className='z-10 sticky top-0'>
-            <nav className='z-10  bg-slate-50 top-0 h-[50px] md:h-[9vh] border border-black flex items-center justify-between w-[100vw]'>
+            <nav className='z-10  bg-slate-50 top-0 h-[50px] md:h-[9vh] flex items-center justify-between w-[100vw]'>
                 <button onClick={() => setMenu(!menu)} className='block md:hidden text-3xl'>☰</button>
 
                 <ol className='hidden md:flex ml-5 items-center gap-2.5'>

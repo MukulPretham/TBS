@@ -20,17 +20,17 @@ const NavBar = () => {
     },)
 
     return (
-        <div className='sticky top-0'>
-            <nav className='sticky top-0 h-[50px] md:h-[9vh] border border-black flex items-center justify-between w-[100vw]'>
+        <div className='z-10 sticky top-0'>
+            <nav className='z-10  bg-slate-50 top-0 h-[50px] md:h-[9vh] border border-black flex items-center justify-between w-[100vw]'>
                 <button onClick={() => setMenu(!menu)} className='block md:hidden text-3xl'>☰</button>
 
                 <ol className='hidden md:flex ml-5 items-center gap-2.5'>
                     <ol className='hidden md:flex ml-5 items-center gap-2.5'>
                         <NavLink to="/" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Home</NavLink>
-                        <NavLink to="/buses" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Buses</NavLink>
-                        <NavLink to="/trains" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Trains</NavLink>
-                        <NavLink to="/flights" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Flights</NavLink>
-                        <NavLink to="/hotels" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Hotels</NavLink>
+                        <NavLink to="/buses" className={({ isActive }) => isActive ? "bg-blue-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Buses</NavLink>
+                        <NavLink to="/trains" className={({ isActive }) => isActive ? "bg-green-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Trains</NavLink>
+                        <NavLink to="/flights" className={({ isActive }) => isActive ? "bg-amber-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Flights</NavLink>
+                        <NavLink to="/hotels" className={({ isActive }) => isActive ? "bg-sky-400 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Hotels</NavLink>
                     </ol>
 
                 </ol>
@@ -51,10 +51,10 @@ const NavBar = () => {
             </nav>
             {menu && <div><ol className='bg-slate-200 w-[100vw] absolute flex flex-col gap-2.5'>
                 <NavLink onClick={()=>{setMenu(!menu)}} to="/" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Home</NavLink>
-                <NavLink onClick={()=>{setMenu(!menu)}} to="/buses" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Buses</NavLink>
-                <NavLink onClick={()=>{setMenu(!menu)}} to="/trains" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Trains</NavLink>
-                <NavLink onClick={()=>{setMenu(!menu)}} to="/flights" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Flights</NavLink>
-                <NavLink onClick={()=>{setMenu(!menu)}} to="/hotels" className={({ isActive }) => isActive ? "bg-red-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Hotels</NavLink>
+                <NavLink onClick={()=>{setMenu(!menu)}} to="/buses" className={({ isActive }) => isActive ? "bg-blue-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Buses</NavLink>
+                <NavLink onClick={()=>{setMenu(!menu)}} to="/trains" className={({ isActive }) => isActive ? "bg-green-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Trains</NavLink>
+                <NavLink onClick={()=>{setMenu(!menu)}} to="/flights" className={({ isActive }) => isActive ? "bg-amber-600 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Flights</NavLink>
+                <NavLink onClick={()=>{setMenu(!menu)}} to="/hotels" className={({ isActive }) => isActive ? "bg-sky-400 text-white p-2.5 rounded-3xl" : "p-2.5 rounded-3xl"}>Hotels</NavLink>
             </ol></div>}
         </div>
     )

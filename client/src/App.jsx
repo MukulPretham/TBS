@@ -1,4 +1,4 @@
-import { useState,useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import SignUp from './components/SignUp.jsx'
 import LogIn from './components/LogIn.jsx'
 import Profile from './components/Profile.jsx'
@@ -13,6 +13,7 @@ import './App.css'
 import Loading from './components/Loading'
 import 'nprogress/nprogress.css';
 import { MyContext } from './context/context.js'
+import Home from './components/Home.jsx'
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
       <MyContext.Provider value={{ logged, setLogged, menu, setMenu }}>
         <NavBar />
         <Routes>
+          <Route path='/' element={<Home />} />
           <Route path='/buses' element={<Buses />} />
           <Route path='/trains' element={<Trains />} />
           <Route path='/flights' element={<Flights />} />
@@ -31,7 +33,7 @@ function App() {
           <Route path='/LogIn' element={<LogIn />} />
           <Route path='/Profile' element={<Profile />} />
         </Routes>
-        <div>Page conten</div>
+
       </MyContext.Provider>
 
     </div>

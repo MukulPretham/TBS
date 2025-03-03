@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { NavLink } from 'react-router';
 import { useNavigate } from 'react-router';
+import { MyContext } from '../context/context';
 const NavBar = () => {
     let navigate = useNavigate();
-    let [logged, setLogged] = useState(false);
-    let [menu, setMenu] = useState(false);
+    let {logged,setLogged,menu,setMenu} = useContext(MyContext);
+    // let [logged, setLogged] = useState(false);
+    // let [menu, setMenu] = useState(false);
 
     //Checking for log status
     useEffect(() => {

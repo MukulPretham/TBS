@@ -21,7 +21,7 @@ const Profile = () => {
 
     return (
         <>
-            <NavBar />
+            
             <div className='h-[91vh] flex flex-col'>
                 <div className="info flex flex-col ml-2">
                     <h1 className='text-4xl'>Your Profile</h1>

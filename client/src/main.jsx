@@ -14,16 +14,7 @@ import Hotels from './components/Hotels.jsx'
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <BrowserRouter>
-      <Routes>
-        <Route path='/' element={<App />} />
-        <Route path='/buses' element={<Buses/>} />
-        <Route path='/trains' element={<Trains/>} />
-        <Route path='/flights' element={<Flights/>} />
-        <Route path='/hotels' element={<Hotels/>} />
-        <Route path='/SignUp' element={<SignUp />} />
-        <Route path='/LogIn' element={<LogIn />} />
-        <Route path='/Profile' element={<Profile />} />
-      </Routes>
+      <App />
     </BrowserRouter>
   </StrictMode>
 )

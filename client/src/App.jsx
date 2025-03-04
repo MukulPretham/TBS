@@ -4,6 +4,7 @@ import LogIn from './components/LogIn.jsx'
 import Profile from './components/Profile.jsx'
 import Buses from './components/Buses.jsx'
 import Trains from './components/Trains.jsx'
+
 import Flights from './components/Flights.jsx'
 import Hotels from './components/Hotels.jsx'
 import NavBar from './components/NavBar'
@@ -14,6 +15,7 @@ import Loading from './components/Loading'
 import 'nprogress/nprogress.css';
 import { MyContext } from './context/context.js'
 import Home from './components/Home.jsx'
+import BusBooking from './components/BusBooking.jsx'
 
 
 function App() {
@@ -24,15 +26,17 @@ function App() {
       <MyContext.Provider value={{ logged, setLogged, menu, setMenu }}>
         <NavBar />
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/buses' element={<Buses />} />
-          <Route path='/trains' element={<Trains />} />
-          <Route path='/flights' element={<Flights />} />
-          <Route path='/hotels' element={<Hotels />} />
-          <Route path='/SignUp' element={<SignUp />} />
-          <Route path='/LogIn' element={<LogIn />} />
-          <Route path='/Profile' element={<Profile />} />
-        </Routes>
+    <Route path='/' element={<Home />} />
+    <Route path='/buses' element={<Buses />} />
+    <Route path='/buses/booking/:_id' element={<BusBooking />} />
+    <Route path='/trains' element={<Trains />} />
+    <Route path='/flights' element={<Flights />} />
+    <Route path='/hotels' element={<Hotels />} />
+    <Route path='/SignUp' element={<SignUp />} />
+    <Route path='/LogIn' element={<LogIn />} />
+    <Route path='/Profile' element={<Profile />} />
+</Routes>
+
 
       </MyContext.Provider>
 

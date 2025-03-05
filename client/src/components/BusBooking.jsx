@@ -1,26 +1,57 @@
-import React, { useEffect, useState } from 'react'
+import { set } from 'nprogress';
+import React, { useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router'
 const BusBooking = () => {
-    let params = useParams();
-    console.log(params)
-    let[bus,setBus] = useState({});
-    useEffect(()=>{
-        async function FetchData() {
-            let response = await fetch(`http://localhost:3001/buses/bookings/${params["_id"]}`)
-            let Data = await response.json();
-            setBus(Data);
+  let params = useParams();
+  console.log(params)
+  let [bus, setBus] = useState({});
+  let [seatLayout, setSeatLayout] = useState([]);
+  useEffect(() => {
+    async function FetchData() {
+      console.log(params);
+      let response = await fetch(`http://localhost:3001/buses/bookings/${params["_id"]}`);
+      let Data = await response.json();
+      setBus(Data);
+      setSeatLayout(Data.seatLayout);
+    }
+    FetchData();
+  }, []);
+
+  let seatClickHandler = (e) => {
+    let bgColor = getComputedStyle(e.target).backgroundColor;
+
+    if (bgColor === "rgb(255, 255, 255)") {  // white in RGB
+      e.target.style.backgroundColor = "blue"; // change via inline style
+    } else {
+      e.target.style.backgroundColor = "white";
+    }
+  }
+
+  let Ref = useRef();
+
+  let bookSeats = () => {
+    let elements = Ref.current.children;
+    let layout = [];
+    for (let i = 1; i <= 40; i++) {
+      if (getComputedStyle(elements[i - 1]).backgroundColor === "rgb(255, 255, 255)") {
+        layout[i - 1] = true;
+      }
+      else {
+        layout[i - 1] = false;
+      }
+    }
+    console.log(layout);
+    async function updateSeats() {
+      let response = await fetch(`http://localhost:3001/buses/bookSeat/${bus._id}`, {
+        method: "POST",
+        body: JSON.stringify({ seatLayout: layout }),
+        headers: {
+          "Content-Type": "application/json"
         }
-        FetchData();
-    })
-  const busDetails = {
-    busNumber: 'KA-05-1234',
-    from: 'Bangalore',
-    to: 'Chennai',
-    price: '₹1200',
-    duration: '6 hours',
-    departTime: '10:00 AM',
-    availableSeats: 25,
-    totalSeats: 40
+      })
+      console.log(await response.json());
+    }
+    updateSeats();
   }
 
   return (
@@ -36,7 +67,14 @@ const BusBooking = () => {
         <p><span className="font-semibold">Available Seats:</span> {bus.Available_Seats}</p>
         <p><span className="font-semibold">Total Seats:</span> {bus.Total_Seats}</p>
       </div>
-      <button className="mt-6 w-[170px] bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
+      <div ref={Ref} className="layout border-2 border-black h-[300px] w-[800px] flex-wrap flex justify-center items-center">
+        {seatLayout.map((seat, index) => (seat ? <div onClick={seatClickHandler} className="bg-white seat h-[72px] w-[78px] border-2 border-black">{index + 1}
+
+        </div>:<div className="bg-gray-500 seat h-[72px] w-[78px] border-2 border-black">
+
+        </div>))}
+      </div>
+      <button onClick={bookSeats} className="mt-6 w-[170px] bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition">
         Book Now
       </button>
     </div>

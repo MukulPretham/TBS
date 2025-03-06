@@ -31,10 +31,16 @@ const BusBooking = () => {
 
   let bookSeats = () => {
     let elements = Ref.current.children;
+    let bookedNumbers =[];
+    let seatsSelected = 0;
     let layout = [];
     for (let i = 1; i <= 40; i++) {
       if (getComputedStyle(elements[i - 1]).backgroundColor === "rgb(255, 255, 255)") {
         layout[i - 1] = true;
+      } else if (getComputedStyle(elements[i - 1]).backgroundColor === "rgb(0, 0, 255)") { // Selected (Blue)
+        seatsSelected++;
+        bookedNumbers.push(elements[i-1].innerHTML)
+        layout[i - 1] = false;
       }
       else {
         layout[i - 1] = false;
@@ -42,13 +48,26 @@ const BusBooking = () => {
     }
     console.log(layout);
     async function updateSeats() {
-      let response = await fetch(`http://localhost:3001/buses/bookSeat/${bus._id}`, {
+      // let response = await fetch(`http://localhost:3001/buses/bookSeat/${bus._id}`, {
+      //   method: "POST",
+      //   body: JSON.stringify({ seatLayout: layout }),
+      //   headers: {
+      //     "Content-Type": "application/json"
+      //   }
+      // })
+      // console.log(await response.json());
+      let response = await fetch(`http://localhost:3000/book?busID=${bus._id}`, {
         method: "POST",
-        body: JSON.stringify({ seatLayout: layout }),
         headers: {
-          "Content-Type": "application/json"
-        }
-      })
+          "Content-Type": "application/json",
+          "authorization": localStorage.getItem("token"),
+        },
+        body: JSON.stringify({
+          seatsSelected: seatsSelected,
+          seatLayout: layout,
+          bookedSeats: bookedNumbers
+        })
+      });
       console.log(await response.json());
     }
     updateSeats();
@@ -70,7 +89,7 @@ const BusBooking = () => {
       <div ref={Ref} className="layout border-2 border-black h-[300px] w-[800px] flex-wrap flex justify-center items-center">
         {seatLayout.map((seat, index) => (seat ? <div onClick={seatClickHandler} className="bg-white seat h-[72px] w-[78px] border-2 border-black">{index + 1}
 
-        </div>:<div className="bg-gray-500 seat h-[72px] w-[78px] border-2 border-black">
+        </div> : <div className="bg-gray-500 seat h-[72px] w-[78px] border-2 border-black">
 
         </div>))}
       </div>

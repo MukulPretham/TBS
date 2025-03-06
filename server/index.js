@@ -77,11 +77,44 @@ app.post("/addMoney",auth,async(req,res)=>{
         return res.json({status: "access denied"});
     }
     let customer = req.query.customerUsername;
+    let currUser = await User.findOne({username: customer});
     let amount = req.query.amount;
-    await User.updateOne({username:customer},{$set: {wallet: amount}});
+    let currWallet = currUser.wallet;
+    let finalAmount = parseInt(currWallet)+parseInt(amount)
+    await User.updateOne({username:customer},{$set: {wallet: finalAmount}});
     res.json({
         msg: `${amount} added to ${customer}`
     })
+})
+
+//bokking path
+app.post("/book",auth,async(req,res)=>{
+    let currUser = await User.findOne({_id: req.userID});
+    //getting bus details
+    let response = await fetch(`http://localhost:3001/buses/bookings/${req.query.busID}`);
+    let currBus = await response.json();
+    let fare = currBus["fare"];
+    let bookedSeats = req.body.seatsSelected;
+    if(bookedSeats*currBus.fare > currUser.wallet){
+        return res.json("insufficient balance");
+    }
+    //bokking process
+    let response2 = await fetch(`http://localhost:3001/buses/bookSeat/${currBus._id}`,{
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },      
+        body: JSON.stringify({ seatLayout: req.body.seatLayout })
+
+    })
+    let final = await response2.json();
+    let currentPrice = bookedSeats*currBus.fare;
+    let finalWallet = currUser.wallet - (bookedSeats*currBus.fare);
+    await User.updateOne({_id: currUser._id},{$set:{wallet: finalWallet }});
+    let bookings = currUser.bookings;
+    bookings.push({seats: bookedSeats,seatNumbers: req.body.bookedSeats,from: currBus.fromAddress, to: currBus.toAddress,paid: currentPrice, date: currBus.date,time: currBus.time, BusNumber: currBus._id });
+    await User.updateOne({_id: currUser._id},{$set:{bookings: bookings}});
+    res.json(final);
 })
 
 app.listen(process.env.PORT,()=>{

@@ -7,6 +7,7 @@ let userSchema = new mongoose.Schema({
     state: String,
     password: String,
     bookings: [Object],
+    wallet: Number
 })
 
 export let User = mongoose.model("users",userSchema);

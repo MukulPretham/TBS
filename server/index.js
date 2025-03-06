@@ -39,7 +39,8 @@ app.post("/signIn",async(req,res)=>{
         email: currEmail,
         city : currCity,
         state: currState,
-        password: currPassword
+        password: currPassword,
+        wallet:0
     })
     await newUser.save();
     console.log("new user registered");
@@ -67,6 +68,20 @@ app.post("/logIn",async(req,res)=>{
 app.get("/users",auth,async(req,res)=>{
     let currUser = await User.findOne({_id:req.userID});
     res.status(200).json(currUser);
+})
+
+//add money route
+app.post("/addMoney",auth,async(req,res)=>{
+    // res.send("hello")
+    if(req.role != "admin"){
+        return res.json({status: "access denied"});
+    }
+    let customer = req.query.customerUsername;
+    let amount = req.query.amount;
+    await User.updateOne({username:customer},{$set: {wallet: amount}});
+    res.json({
+        msg: `${amount} added to ${customer}`
+    })
 })
 
 app.listen(process.env.PORT,()=>{

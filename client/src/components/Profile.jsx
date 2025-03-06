@@ -62,6 +62,10 @@ const Profile = () => {
                 <span className="text-gray-600 font-medium">State</span>
                 <span className="text-gray-800">{user.state || '-'}</span>
             </div>
+            <div className="flex justify-between">
+                <span className="text-gray-600 font-medium">Wallet Balance</span>
+                <span className="text-gray-800">{user.wallet || 0}</span>
+            </div>
         </div>
 
         {/* Action Button */}

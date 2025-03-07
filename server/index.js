@@ -117,6 +117,17 @@ app.post("/book",auth,async(req,res)=>{
     res.json(final);
 })
 
+//sending bookings details
+app.get("/getBookings",auth,async(req,res)=>{
+    try{
+        let currUser = await User.findOne({_id: req.userID});
+        let currBookings = currUser["bookings"];
+        res.json(currBookings);
+    }catch(error){
+        res.status(500).json({msg:"something went wrong"});
+    }
+})
+
 app.listen(process.env.PORT,()=>{
     console.log("server is live");
 })

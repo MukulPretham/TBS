@@ -16,6 +16,7 @@ import 'nprogress/nprogress.css';
 import { MyContext } from './context/context.js'
 import Home from './components/Home.jsx'
 import BusBooking from './components/BusBooking.jsx'
+import MyBookings from './components/MyBookings.jsx'
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
     <Route path='/' element={<Home />} />
     <Route path='/buses' element={<Buses />} />
     <Route path='/buses/booking/:_id' element={<BusBooking />} />
+    <Route path='/myBookings' element={<MyBookings />} />
     <Route path='/trains' element={<Trains />} />
     <Route path='/flights' element={<Flights />} />
     <Route path='/hotels' element={<Hotels />} />

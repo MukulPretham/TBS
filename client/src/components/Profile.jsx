@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import NavBar from './NavBar'
 import { useContext } from 'react';
-import { useNavigate } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 import { MyContext } from '../context/context';
 const Profile = () => {
     let { logged, setLogged } = useContext(MyContext);
@@ -41,47 +41,53 @@ const Profile = () => {
                 }} className='bg-red-500 text-white rounded-3xl cursor-pointer px-5  py-2.5 w-[140px]'>Log-Out</button>
             </div> */}
             <div className="h-[91vh] bg-gray-50 flex items-center justify-center">
-    <div className="bg-white shadow-md rounded-xl overflow-hidden w-[480px]">
-        {/* Top Section - Blank Avatar + Name/Email */}
-        <div className="flex flex-col items-center py-6 border-b">
-            <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
-                {/* Simple user icon (you can replace this with an <svg> if you want) */}
-                <span className="text-gray-500 text-4xl">👤</span>
-            </div>
-            <h2 className="text-xl font-semibold text-gray-800 mt-3">{user.username || 'User Name'}</h2>
-            <p className="text-gray-500 text-sm">{user.email || 'user@example.com'}</p>
-        </div>
+                <div className="bg-white shadow-md rounded-xl overflow-hidden w-[480px]">
+                    {/* Top Section - Blank Avatar + Name/Email */}
+                    <div className="flex flex-col items-center py-6 border-b">
+                        <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
+                            {/* Simple user icon (you can replace this with an <svg> if you want) */}
+                            <span className="text-gray-500 text-4xl">👤</span>
+                        </div>
+                        <h2 className="text-xl font-semibold text-gray-800 mt-3">{user.username || 'User Name'}</h2>
+                        <p className="text-gray-500 text-sm">{user.email || 'user@example.com'}</p>
+                    </div>
 
-        {/* Details Section */}
-        <div className="p-6 space-y-4">
-            <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">City</span>
-                <span className="text-gray-800">{user.city || '-'}</span>
-            </div>
-            <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">State</span>
-                <span className="text-gray-800">{user.state || '-'}</span>
-            </div>
-            <div className="flex justify-between">
-                <span className="text-gray-600 font-medium">Wallet Balance</span>
-                <span className="text-gray-800">{user.wallet || 0}</span>
-            </div>
-        </div>
+                    {/* Details Section */}
+                    <div className="p-6 space-y-4">
+                        <div className="flex justify-between">
+                            <span className="text-gray-600 font-medium">City</span>
+                            <span className="text-gray-800">{user.city || '-'}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-gray-600 font-medium">State</span>
+                            <span className="text-gray-800">{user.state || '-'}</span>
+                        </div>
+                        <div className="flex justify-between">
+                            <span className="text-gray-600 font-medium">Wallet Balance</span>
+                            <span className="text-gray-800">{user.wallet || 0}</span>
+                        </div>
+                    </div>
 
-        {/* Action Button */}
-        <div className="p-6 border-t flex justify-center">
-            <button
-                onClick={() => {
-                    localStorage.removeItem("token");
-                    navigate("/");
-                }}
-                className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-lg transition"
-            >
-                Log Out
-            </button>
-        </div>
-    </div>
-</div>
+                    {/* Action Button */}
+                    <div className="p-6 border-t flex gap-1 justify-center">
+                        <button
+                            onClick={() => {
+                                localStorage.removeItem("token");
+                                navigate("/");
+                            }}
+                            className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-lg transition"
+                        >
+                            Log Out
+                        </button>
+                        <NavLink to="/myBookings">
+                            <button className="bg-red-500 hover:bg-red-600 text-white font-medium py-2 px-6 rounded-lg transition">
+                                My Bookings
+                            </button>
+                        </NavLink>
+
+                    </div>
+                </div>
+            </div>
 
 
 

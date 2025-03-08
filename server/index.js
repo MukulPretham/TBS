@@ -104,7 +104,7 @@ app.post("/book",auth,async(req,res)=>{
         headers: {
             "Content-Type": "application/json"
         },      
-        body: JSON.stringify({ seatLayout: req.body.seatLayout })
+        body: JSON.stringify({ seatLayout: req.body.seatLayout,username: currUser.username,seats: bookedSeats })
 
     })
     let final = await response2.json();

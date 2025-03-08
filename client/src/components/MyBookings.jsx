@@ -13,7 +13,7 @@ const MyBookings = () => {
             });
             let Data = await response.json();
             console.log(Data);
-            setBooking(Data);
+            setBooking(Data.reverse());
         }
         FetchData();
     },[])

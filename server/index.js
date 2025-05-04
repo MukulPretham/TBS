@@ -14,22 +14,22 @@ app.use(cors());
 dotenv.config();
 
 //DB connection
-mongoose.connect(process.env.MONGO_URL).then(()=>{
+mongoose.connect(process.env.MONGO_URL).then(() => {
     console.log("Database connected.");
 })
 
-app.get("/",(req,res)=>{
+app.get("/", (req, res) => {
     res.send("hello");
 })
 
-app.post("/signIn",async(req,res)=>{
+app.post("/signIn", async (req, res) => {
     let currUsername = req.body.username;
-    if(await User.findOne({username:currUsername})){
-        return res.status(409).json({message: "user already exist"});
+    if (await User.findOne({ username: currUsername })) {
+        return res.status(409).json({ message: "user already exist" });
     }
     let currEmail = req.body.email;
-    if(await User.findOne({email:currEmail})){
-        return res.status(409).json({message: "email already exist"});
+    if (await User.findOne({ email: currEmail })) {
+        return res.status(409).json({ message: "email already exist" });
     }
     let currPassword = req.body.password;
     let currCity = req.body.city;
@@ -37,97 +37,129 @@ app.post("/signIn",async(req,res)=>{
     let newUser = new User({
         username: currUsername,
         email: currEmail,
-        city : currCity,
+        city: currCity,
         state: currState,
         password: currPassword,
-        wallet:0
+        wallet: 0
     })
     await newUser.save();
     console.log("new user registered");
-    res.status(200).json({Status: 'success'});
+    res.status(200).json({ Status: 'success' });
 })
 
-app.post("/logIn",async(req,res)=>{
+app.post("/logIn", async (req, res) => {
     let currUsername = req.body.username;
     let currPassword = req.body.password;
-    let currUser = await User.findOne({username: currUsername});
-    if(!currUser){
-        return res.status(404).json({message : "Invalid username"});
+    let currUser = await User.findOne({ username: currUsername });
+    if (!currUser) {
+        return res.status(404).json({ message: "Invalid username" });
     }
-    if(currUser.password !== currPassword ){
-        return res.status(404).json({message : "Invalid password"});
+    if (currUser.password !== currPassword) {
+        return res.status(404).json({ message: "Invalid password" });
     }
     //Creating a token
     let token = jwt.sign(
-        {userID:currUser._id,username: currUsername},
+        { userID: currUser._id, username: currUsername },
         process.env.JWT_SECRET
     );
-    res.json({token});
+    res.json({ token });
 })
 
-app.get("/users",auth,async(req,res)=>{
-    let currUser = await User.findOne({_id:req.userID});
+app.get("/users", auth, async (req, res) => {
+    let currUser = await User.findOne({ _id: req.userID });
     res.status(200).json(currUser);
 })
 
 //add money route
-app.post("/addMoney",auth,async(req,res)=>{
+app.post("/addMoney", auth, async (req, res) => {
     // res.send("hello")
-    if(req.role != "admin"){
-        return res.json({status: "access denied"});
+    if (req.role != "admin") {
+        return res.json({ status: "access denied" });
     }
     let customer = req.query.customerUsername;
-    let currUser = await User.findOne({username: customer});
+    let currUser = await User.findOne({ username: customer });
     let amount = req.query.amount;
     let currWallet = currUser.wallet;
-    let finalAmount = parseInt(currWallet)+parseInt(amount)
-    await User.updateOne({username:customer},{$set: {wallet: finalAmount}});
+    let finalAmount = parseInt(currWallet) + parseInt(amount)
+    await User.updateOne({ username: customer }, { $set: { wallet: finalAmount } });
     res.json({
         msg: `${amount} added to ${customer}`
     })
 })
 
 //bokking path
-app.post("/book",auth,async(req,res)=>{
-    let currUser = await User.findOne({_id: req.userID});
+app.post("/book", auth, async (req, res) => {
+    let currUser = await User.findOne({ _id: req.userID });
     //getting bus details
     let response = await fetch(`http://localhost:3001/buses/bookings/${req.query.busID}`);
+
     let currBus = await response.json();
     let fare = currBus["fare"];
     let bookedSeats = req.body.seatsSelected;
-    if(bookedSeats*currBus.fare > currUser.wallet){
-        return res.json("insufficient balance");
+    if (bookedSeats * currBus.fare > currUser.wallet) {
+        return res.status(404).json({ message: "insufficient balance" });
     }
+
     //bokking process
-    let response2 = await fetch(`http://localhost:3001/buses/bookSeat/${currBus._id}`,{
+    let response2 = await fetch(`http://localhost:3001/buses/bookSeat/${currBus._id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
-        },      
-        body: JSON.stringify({ seatLayout: req.body.seatLayout,username: currUser.username, seats: req.body.bookedSeats})
+        },
+        body: JSON.stringify({ seatLayout: req.body.seatLayout, username: currUser.username, seats: req.body.bookedSeats })
 
     })
-    let final = await response2.json();
-    let currentPrice = bookedSeats*currBus.fare;
-    let finalWallet = currUser.wallet - (bookedSeats*currBus.fare);
-    await User.updateOne({_id: currUser._id},{$set:{wallet: finalWallet }});
-    let bookings = currUser.bookings;
-    bookings.push({seats: bookedSeats,seatNumbers: req.body.bookedSeats,from: currBus.fromAddress, to: currBus.toAddress,paid: currentPrice, date: currBus.date,time: currBus.time, BusNumber: currBus._id });
-    await User.updateOne({_id: currUser._id},{$set:{bookings: bookings}});
-    res.json(final);
-})
 
-//sending bookings details
-app.get("/getBookings",auth,async(req,res)=>{
-    try{
-        let currUser = await User.findOne({_id: req.userID});
-        let currBookings = currUser["bookings"];
-        res.json(currBookings);
-    }catch(error){
-        res.status(500).json({msg:"something went wrong"});
+    let final = await response2.json();
+    console.log(final);
+    if (final.status != 200) {
+        let currentPrice = bookedSeats * currBus.fare;
+        let finalWallet = currUser.wallet - (bookedSeats * currBus.fare);
+        await User.updateOne({ _id: currUser._id }, { $set: { wallet: finalWallet } });
+        let bookings = currUser.bookings;
+        bookings.push({ seats: bookedSeats, seatNumbers: req.body.bookedSeats, from: currBus.fromAddress, to: currBus.toAddress, paid: currentPrice, date: currBus.date, time: currBus.time, BusNumber: currBus._id, PNR: final.PNR });
+        await User.updateOne({ _id: currUser._id }, { $set: { bookings: bookings } });
+        //Sendinfg email
+        console.log(currUser);
+        const email = await fetch("http://16.16.124.24:3000/mail", {
+            method: 'POST',
+            headers:{
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                email: currUser.email,
+                subject: "Booking update",
+                body: `Dear ${currUser.username},
+
+Thank you for choosing Our Services! Your bus booking has been successfully confirmed. Below are your journey details:
+
+🧾 Booking Details
+
+PNR: ${final.PNR}
+Passenger Name(s): ${currUser.username}
+Contact: ${currUser.email}`
+            })
+        });
+        console.log(await email.json());
+
+        res.status(200).json({ message: "booking sucessfull" });
+
+    } else {
+        res.status(500).json({ message: "Server is busy, please try agian later" });
     }
 })
 
-app.listen(process.env.PORT,()=>{
+//sending bookings details
+app.get("/getBookings", auth, async (req, res) => {
+    try {
+        let currUser = await User.findOne({ _id: req.userID });
+        let currBookings = currUser["bookings"];
+        res.json(currBookings);
+    } catch (error) {
+        res.status(500).json({ msg: "something went wrong" });
+    }
+})
+
+app.listen(process.env.PORT, () => {
     console.log("server is live");
 })
